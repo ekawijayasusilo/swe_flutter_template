@@ -17,13 +17,13 @@ jobs:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v2
     with:
       flutter_version_file: pubspec.yaml
       run_bloc_lint: true
 
   build-design-system:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v2
     with:
       flutter_version_file: pubspec.yaml
       working_directory: packages/swe_design_system
