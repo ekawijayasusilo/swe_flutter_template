@@ -7,10 +7,10 @@ concurrency:
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   semantic-pull-request:
@@ -19,8 +19,40 @@ jobs:
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
-      flutter_version: "3.47.x"
+      flutter_version_file: pubspec.yaml
       run_bloc_lint: true
+
+  build-design-system:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+    with:
+      flutter_version_file: pubspec.yaml
+      working_directory: packages/swe_design_system
+
+  # Widgetbook is an app without tests, so flutter_package.yml (100% coverage gate) doesn't fit.
+  build-widgetbook:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/widgetbook
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: subosito/flutter-action@v2.23.0
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - run: flutter pub get
+
+      - run: dart format --set-exit-if-changed lib
+
+      - run: flutter analyze lib
+
+      - name: Verify generated code is up to date
+        run: |
+          dart run build_runner build --delete-conflicting-outputs
+          git diff --exit-code
+          test -z "$(git status --porcelain)"
 
   spell-check:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1

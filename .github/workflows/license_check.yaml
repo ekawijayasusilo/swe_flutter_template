@@ -7,21 +7,25 @@ concurrency:
 on:
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - "pubspec.yaml"
+      - "pubspec.lock"
+      - "packages/**/pubspec.yaml"
       - ".github/workflows/license_check.yaml"
   push:
     branches:
-      - main
+      - master
     paths:
       - "pubspec.yaml"
+      - "pubspec.lock"
+      - "packages/**/pubspec.yaml"
       - ".github/workflows/license_check.yaml"
 
 jobs:
   license_check:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/license_check.yml@v1
     with:
-      flutter_version: "3.47.8"
+      flutter_version_file: pubspec.yaml
       allowed: "MIT,BSD-3-Clause,BSD-2-Clause,Apache-2.0"
       skip_packages: "pubspec_lock_parse"
