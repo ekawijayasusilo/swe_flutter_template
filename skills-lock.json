@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "firebase-analytics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-analytics/SKILL.md",
+      "computedHash": "b406ffe6e07a89c17d2370379bc0e7fa1b01f778069fc0c3a71a0b6858f67c78"
+    },
+    "firebase-auth-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-auth-basics/SKILL.md",
+      "computedHash": "ea315ad88b6ae71e985736b6958a0d7819b56fc3cb86786a868eed5e4315d735"
+    },
+    "firebase-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-basics/SKILL.md",
+      "computedHash": "3a6fc163580d8c6e3bb2d4671a2cec358893ff02a11f338af342d7017788fd01"
+    },
+    "firebase-crashlytics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-crashlytics/SKILL.md",
+      "computedHash": "6a2140c7f16258a7ffc4ed951dbd7d9d222e0963c55ac730b632fcd5f56c9cc2"
+    },
+    "firebase-remote-config-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-remote-config-basics/SKILL.md",
+      "computedHash": "ec683cc34d6729c898466accb95fc291263675b6b85c34e8eb3a2c6d5507985c"
+    }
+  }
+}
