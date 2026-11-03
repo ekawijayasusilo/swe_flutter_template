@@ -1,6 +1,18 @@
 {
   "version": 1,
   "skills": {
+    "dart-use-pattern-matching": {
+      "source": "flutter/agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/dart-use-pattern-matching/SKILL.md",
+      "computedHash": "86026e8b8b97849e2355eeeb01b94b566939570aac37dfc5b9b33b297fa9983e"
+    },
+    "dart-write-documentation": {
+      "source": "flutter/agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/dart-write-documentation/SKILL.md",
+      "computedHash": "2c6cf741f5424f7f3ed805a09ec0c46b668bb9f9c2861988b3da42e558e5ae95"
+    },
     "firebase-analytics": {
       "source": "firebase/agent-skills",
       "sourceType": "github",
@@ -30,6 +42,30 @@
       "sourceType": "github",
       "skillPath": "skills/firebase-remote-config-basics/SKILL.md",
       "computedHash": "ec683cc34d6729c898466accb95fc291263675b6b85c34e8eb3a2c6d5507985c"
+    },
+    "flutter-add-widget-preview": {
+      "source": "flutter/agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-add-widget-preview/SKILL.md",
+      "computedHash": "cba5e1368efe4d8c4ce1f9b4d442ce4870adbf4729244a33fd8b29c01541279a"
+    },
+    "flutter-build-responsive-layout": {
+      "source": "flutter/agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-build-responsive-layout/SKILL.md",
+      "computedHash": "6d74a9504c4e355c4c62f6fcb6c6dc0df67b56dd6616bea199e4e58f75b7729b"
+    },
+    "flutter-fix-layout-issues": {
+      "source": "flutter/agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-fix-layout-issues/SKILL.md",
+      "computedHash": "b2f9789451224e6df8d1d7ac63854c2f1beb30fa35d13ea06fbae9ba2b1b0a7f"
+    },
+    "flutter-setup-declarative-routing": {
+      "source": "flutter/agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-setup-declarative-routing/SKILL.md",
+      "computedHash": "4c2ed2fd729230be581b15d84741688e206632fb2b38af320060cd3518b91179"
     }
   }
 }
