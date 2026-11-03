@@ -7,7 +7,7 @@ concurrency:
 on:
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - "pubspec.yaml"
       - "pubspec.lock"
@@ -15,7 +15,7 @@ on:
       - ".github/workflows/license_check.yaml"
   push:
     branches:
-      - master
+      - main
     paths:
       - "pubspec.yaml"
       - "pubspec.lock"
