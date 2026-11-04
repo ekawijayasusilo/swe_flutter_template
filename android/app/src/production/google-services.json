@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "44701027439",
+    "project_id": "swe-flutter-template",
+    "storage_bucket": "swe-flutter-template.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44701027439:android:432011fcbef961f2a3919a",
+        "android_client_info": {
+          "package_name": "id.swe.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3fPydIRfuxvHcv_vWXCok7dwSiLXkv_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
