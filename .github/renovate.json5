@@ -1,0 +1,13 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  // Shared policy from proto_codecare_scripts. Keep both refs on the same tag; Renovate bumps them.
+  extends: [
+    "github>ekawijayasusilo/proto_codecare_scripts//version-control/renovate-configs/default#v1.0.0",
+    "github>ekawijayasusilo/proto_codecare_scripts//version-control/renovate-configs/flutter.json5#v1.0.0",
+  ],
+  // Local workspace package, not published on pub.dev.
+  ignoreDeps: ["swe_design_system"],
+  // Dependabot owns all security PRs here (.github/dependabot.yaml): Renovate can't fix pub alerts,
+  // and handling only GitHub Actions alerts would duplicate Dependabot's PRs.
+  vulnerabilityAlerts: { enabled: false },
+}
