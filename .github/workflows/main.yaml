@@ -15,6 +15,21 @@ on:
 jobs:
   semantic-pull-request:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v2
+    with:
+      # Default conventional types, plus "vulnerability" used by Dependabot security PRs (.github/dependabot.yaml).
+      types: |
+        feat
+        fix
+        docs
+        style
+        refactor
+        perf
+        test
+        build
+        ci
+        chore
+        revert
+        vulnerability
 
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v2
@@ -53,6 +68,20 @@ jobs:
           dart run build_runner build --delete-conflicting-outputs
           git diff --exit-code
           test -z "$(git status --porcelain)"
+
+  # The workspace has a single root pubspec.lock. Renovate may bump a member's pubspec.yaml
+  # without updating it, and plain `pub get` would silently re-resolve, so fail on drift instead.
+  lockfile-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: subosito/flutter-action@v2.23.0
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - run: flutter pub get --enforce-lockfile
 
   spell-check:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v2
