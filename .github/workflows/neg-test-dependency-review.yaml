@@ -1,0 +1,16 @@
+name: neg-test-dependency-review
+
+# Throwaway negative test (do not merge): tj-actions/changed-files <= 45.0.7 has GHSA-mrrh-fwg8-r2c3,
+# so dependency-review must fail this PR. workflow_dispatch only runs on main, so this never executes.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: tj-actions/changed-files@v45.0.7
