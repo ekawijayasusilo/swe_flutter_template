@@ -1,0 +1,35 @@
+# Betterleaks config: default rules plus narrow exceptions for values that are public by design.
+# An exception applies only when rule, path and value shape all match, so any other secret in
+# these files is still reported. Suppress a one-off false positive inline with
+# `betterleaks:allow <reason>`; never widen these filters without review.
+filter = '''
+(
+  // Firebase client API keys: public identifiers, restricted in Google Cloud (see docs/security.md).
+  // Both rules match AIza keys, so the exception covers both, limited to the exact key format.
+  filter.matchesAny(finding["rule_id"], [`^(gcp-api-key|generic-api-key)$`]) &&
+  filter.matchesAny(finding["secret"], [`^AIza[0-9A-Za-z_-]{35}$`]) &&
+  filter.matchesAny(attributes["path"], [
+    `^lib/firebase_options_(development|staging|production)\.dart$`,
+    `^android/app/src/(development|staging|production)/google-services\.json$`,
+    `^ios/flavors/(development|staging|production)/GoogleService-Info\.plist$`,
+    `^web/firebase-messaging-sw-(development|staging|production)\.js$`
+  ])
+)
+||
+(
+  // Web push VAPID public keys (87 chars). A private VAPID key is 43 chars and stays flagged.
+  finding["rule_id"] == "generic-api-key" &&
+  attributes["path"] == "lib/web_push_config.dart" &&
+  filter.matchesAny(finding["line"], [`^\s*vapidKey:\s*'[A-Za-z0-9_-]{87}',\s*$`])
+)
+||
+(
+  // Sample code `password: "password"` in vendored agent skill docs.
+  finding["rule_id"] == "generic-password" &&
+  filter.matchesAny(attributes["path"], [`^\.(agents|claude)/skills/[^/]+/references/[^/]+\.md$`]) &&
+  finding["secret"] == "password"
+)
+'''
+
+[extend]
+useDefault = true

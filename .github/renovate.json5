@@ -10,6 +10,17 @@
   // Dependabot owns all security PRs here (.github/dependabot.yaml): Renovate can't fix pub alerts,
   // and handling only GitHub Actions alerts would duplicate Dependabot's PRs.
   vulnerabilityAlerts: { enabled: false },
+  customManagers: [
+    {
+      customType: "regex",
+      description: "Betterleaks CLI version in the secrets workflow.",
+      managerFilePatterns: ["/^\\.github/workflows/secrets\\.yaml$/"],
+      matchStrings: [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+[A-Z_]+:\\s*\"(?<currentValue>[^\"]+)\"",
+      ],
+      extractVersionTemplate: "^v(?<version>.+)$",
+    },
+  ],
   packageRules: [
     {
       description: "One PR for all GitHub Actions bumps: actions.lock narrows tags to exact versions (v7 -> v7.0.1), so each patch would otherwise get its own PR. Renovate regenerates actions.lock in the same PR.",

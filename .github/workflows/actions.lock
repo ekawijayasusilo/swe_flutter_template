@@ -16,6 +16,8 @@ workflows:
         - 'actions/dependency-review-action@v5.0.1'
         - 'github/gh-actions-lock@verify/v0.5.1'
         - 'subosito/flutter-action@v2.23.0'
+    '.github/workflows/secrets.yaml':
+        - 'actions/checkout@v7.0.1'
     '.github/workflows/zizmor.yaml':
         - 'actions/checkout@v7.0.1'
         - 'zizmorcore/zizmor-action@v0.9.2'

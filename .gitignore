@@ -58,6 +58,10 @@ unlinked_spec.ds
 **/android/app/profile
 **/android/app/release
 *.jks
+# Signing keystores and certificates: binary, so secret scanners can't read them.
+*.keystore
+*.p12
+*.pfx
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
