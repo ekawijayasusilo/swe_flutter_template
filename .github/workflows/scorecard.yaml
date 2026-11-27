@@ -1,0 +1,39 @@
+name: scorecard
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "41 2 * * 1" # weekly
+  branch_protection_rule:
+
+permissions: {}
+
+# OpenSSF Scorecard: rates the repo's security practices (branch protection, pinning, token
+# permissions, ...). Report-only; results go to Security > Code scanning and scorecard.dev.
+# Publishing results restricts this workflow: no top-level env/defaults or write permissions,
+# no run steps in this job, and only allowlisted actions. Keep it that way.
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      security-events: write # upload SARIF
+      id-token: write # sign published results
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ossf/scorecard-action@v2.6.0
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          publish_results: true
+          fail_on_publish_error: true
+
+      - uses: github/codeql-action/upload-sarif@v4.39.5
+        with:
+          sarif_file: results.sarif
