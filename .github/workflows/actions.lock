@@ -3,6 +3,9 @@
 # Docs: https://gh.io/actions-lockfile
 version: 'v0.0.3'
 workflows:
+    '.github/workflows/codeql.yaml':
+        - 'actions/checkout@v7.0.1'
+        - 'github/codeql-action@v4.39.5'
     '.github/workflows/flutter-android-build.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-java@v6.3.0'
@@ -34,6 +37,11 @@ dependencies:
         commit: 'sha1-d1374f8ac74474200d16ef8ecee22c7ae7a51880'
         owner_id: 44036562
         repo_id: 196057608
+    'github/codeql-action@v4.39.5':
+        ref: 'v4.39.5'
+        commit: 'sha1-915412ff23e8b7659517e607487dbeae018f2934'
+        owner_id: 9919
+        repo_id: 259445878
     'github/gh-actions-lock@verify/v0.5.1':
         ref: 'verify/v0.5.1'
         commit: 'sha1-5fa07d19c267d19e29f4341f10fdf7f516375038'
