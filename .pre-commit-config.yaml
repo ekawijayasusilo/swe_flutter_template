@@ -1,0 +1,9 @@
+# Optional: scan staged changes for secrets before each commit.
+# Needs the betterleaks binary on PATH (https://github.com/betterleaks/betterleaks/releases)
+# and pre-commit (https://pre-commit.com). Opt in with `pre-commit install`.
+repos:
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: v1.10.1
+    hooks:
+      - id: betterleaks-system
+        args: [--config, .betterleaks.toml]

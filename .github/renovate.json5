@@ -33,5 +33,12 @@
       matchDepNames: ["github/gh-actions-lock"],
       versioning: "regex:^verify/v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
     },
+    {
+      description: "Keep the CI Betterleaks version (secrets.yaml) and the pre-commit hook rev in one PR.",
+      matchDepNames: ["betterleaks/betterleaks"],
+      groupName: "betterleaks",
+    },
   ],
+  // The optional Betterleaks hook in .pre-commit-config.yaml; this manager is off by default.
+  "pre-commit": { enabled: true },
 }
