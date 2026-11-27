@@ -33,3 +33,8 @@ possible:
 
 The maintainers will acknowledge your report as soon as possible and work with
 you to investigate the issue and coordinate a fix and disclosure.
+
+## Security Checks
+
+How this repo is scanned, how to handle findings, and how the Firebase keys are
+protected: [docs/security.md](docs/security.md).
