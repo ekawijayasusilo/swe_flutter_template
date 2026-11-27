@@ -1,0 +1,37 @@
+name: zizmor
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/**"
+
+permissions: {}
+
+# Security lint for workflow files. Report-only: findings go to Security > Code scanning (tool "zizmor")
+# and don't block merges (the ruleset's code scanning gate only covers CodeQL).
+jobs:
+  zizmor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      security-events: write # upload SARIF
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: zizmorcore/zizmor-action@v0.9.2
+        with:
+          version: "1.33.1" # pinned so new audits arrive through a reviewed bump, not silently
