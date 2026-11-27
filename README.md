@@ -109,8 +109,8 @@ flowchart LR
 - Nothing merges before the required checks pass. `lockfile-check` fails when `pubspec.lock` is out of date.
 - Titles are `fix(deps): ...` for runtime dependencies and `chore(deps): ...` for dev dependencies and tooling.
 - The **Dependency Dashboard** issue lists pending updates. Tick a box to get a PR early; it's created on the next runner run.
-- CI doesn't build Android yet. Build Flutter SDK and Gradle PRs locally before merging:
-  `flutter build apk --flavor development -t lib/main_development.dart`.
+- PRs that change `pubspec.yaml`, `pubspec.lock` or `android/**` (Flutter SDK, Gradle) get a debug Android build in CI
+  (`flutter-android-build`). It isn't a required check, so make sure it passed before merging.
 
 Rules and their reasons: [shared presets][renovate_presets_link]. Runner: [proto_codecare][renovate_runner_link]. Rules for this repo only go in `.github/renovate.json5`.
 
