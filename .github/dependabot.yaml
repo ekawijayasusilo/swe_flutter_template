@@ -3,7 +3,7 @@
 # limit and still follow commit-message, which keeps PR titles semantic (vulnerability(deps): ...).
 version: 2
 updates:
-  - package-ecosystem: "pub"
+  - package-ecosystem: "pub" # zizmor: ignore[dependabot-cooldown] cooldown only delays version updates, which are off
     # Pub workspace: the single root pubspec.lock covers all packages.
     directory: "/"
     schedule:
@@ -12,7 +12,7 @@ updates:
     commit-message:
       prefix: "vulnerability"
       include: "scope"
-  - package-ecosystem: "github-actions"
+  - package-ecosystem: "github-actions" # zizmor: ignore[dependabot-cooldown] cooldown only delays version updates, which are off
     directory: "/"
     schedule:
       interval: "weekly"
