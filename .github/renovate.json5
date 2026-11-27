@@ -13,8 +13,8 @@
   customManagers: [
     {
       customType: "regex",
-      description: "Betterleaks CLI version in the secrets workflow.",
-      managerFilePatterns: ["/^\\.github/workflows/secrets\\.yaml$/"],
+      description: "Pinned CLI versions (Betterleaks, OSV-Scanner) in workflow env vars.",
+      managerFilePatterns: ["/^\\.github/workflows/(secrets|native_deps)\\.yaml$/"],
       matchStrings: [
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+[A-Z_]+:\\s*\"(?<currentValue>[^\"]+)\"",
       ],
