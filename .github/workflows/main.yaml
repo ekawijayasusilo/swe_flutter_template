@@ -12,9 +12,13 @@ on:
     branches:
       - main
 
+permissions: {}
+
 jobs:
   semantic-pull-request:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v2
+    permissions:
+      pull-requests: read # the semantic PR action calls the GitHub API with GITHUB_TOKEN
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@33d441b1f92ff046f1945309a204d9ed039e6fc9 # v2.1.0
     with:
       # Default conventional types, plus "vulnerability" used by Dependabot security PRs (.github/dependabot.yaml).
       types: |
@@ -32,13 +36,17 @@ jobs:
         vulnerability
 
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v2
+    permissions:
+      contents: read
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@33d441b1f92ff046f1945309a204d9ed039e6fc9 # v2.1.0
     with:
       flutter_version_file: pubspec.yaml
       run_bloc_lint: true
 
   build-design-system:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v2
+    permissions:
+      contents: read
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@33d441b1f92ff046f1945309a204d9ed039e6fc9 # v2.1.0
     with:
       flutter_version_file: pubspec.yaml
       working_directory: packages/swe_design_system
@@ -46,11 +54,15 @@ jobs:
   # Widgetbook is an app without tests, so flutter_package.yml (100% coverage gate) doesn't fit.
   build-widgetbook:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: packages/widgetbook
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - uses: subosito/flutter-action@v2.23.0
         with:
@@ -73,8 +85,12 @@ jobs:
   # without updating it, and plain `pub get` would silently re-resolve, so fail on drift instead.
   lockfile-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - uses: subosito/flutter-action@v2.23.0
         with:
