@@ -99,6 +99,18 @@ jobs:
 
       - run: flutter pub get --enforce-lockfile
 
+  # Fails the PR when it adds a pub package or GitHub Action with a known high or critical
+  # vulnerability (GitHub Advisory Database). The action only works on pull_request events.
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/dependency-review-action@v5.0.1
+        with:
+          fail-on-severity: high
+
   # Fails when a `uses:` ref isn't locked in .github/workflows/actions.lock, or a locked pin no
   # longer verifies upstream. Fix by running `gh actions-lock` (or `--relock`) and committing the lockfile.
   actions-lock:

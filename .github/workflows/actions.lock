@@ -10,6 +10,7 @@ workflows:
     '.github/workflows/license_check.yaml': []
     '.github/workflows/main.yaml':
         - 'actions/checkout@v7.0.1'
+        - 'actions/dependency-review-action@v5.0.1'
         - 'github/gh-actions-lock@verify/v0.5.1'
         - 'subosito/flutter-action@v2.23.0'
 dependencies:
@@ -23,6 +24,11 @@ dependencies:
         commit: 'sha1-3d3c42e5aac5ba805825da76410c181273ba90b1'
         owner_id: 44036562
         repo_id: 197814629
+    'actions/dependency-review-action@v5.0.1':
+        ref: 'v5.0.1'
+        commit: 'sha1-bbc44d14a204704ccc493733616cd1e93a0321ec'
+        owner_id: 44036562
+        repo_id: 476372928
     'actions/setup-java@v6.3.0':
         ref: 'v6.3.0'
         commit: 'sha1-d1374f8ac74474200d16ef8ecee22c7ae7a51880'
