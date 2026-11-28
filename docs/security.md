@@ -105,6 +105,10 @@ Report-only results are under **Security** → **Code scanning** (tools `zizmor`
 - **No Dart SAST.** CodeQL doesn't support Dart. CodeQL covers workflows and the web JavaScript only.
 - **Pub advisory coverage is thin**, and OSV has few Swift advisories, so a clean iOS scan isn't
   proof of safety.
+- **`dependency-review` sees one changed workflow per PR.** GitHub's dependency graph keeps only the
+  alphabetically last changed workflow file in a push, so a vulnerable action in another workflow
+  changed by the same PR isn't flagged. Pub changes (`pubspec.lock`) are still caught. Keep PRs
+  that add or bump actions to one workflow file where you can.
 - **Secret scanning detects after exposure** on a public repo. Prevention relies on push protection
   (provider formats only, not Google API keys) and the optional pre-commit hook.
 - **Actions inside very_good_workflows float** (`@v7`, `@main`). Mitigated by read-only tokens and
