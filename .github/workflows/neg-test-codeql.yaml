@@ -1,0 +1,15 @@
+name: neg-test-codeql
+
+# Throwaway gate test (do not merge): script injection of the PR title in a privileged trigger,
+# so CodeQL must raise a high/critical alert. pull_request_target runs main's copy of a workflow,
+# and this file is not on main, so it never executes.
+on:
+  pull_request_target:
+
+permissions: {}
+
+jobs:
+  echo-title:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.pull_request.title }}"
