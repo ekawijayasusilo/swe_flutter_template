@@ -11,5 +11,7 @@ permissions: {}
 jobs:
   echo-title:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - run: echo "${{ github.event.pull_request.title }}"
