@@ -10,4 +10,35 @@
   // Dependabot owns all security PRs here (.github/dependabot.yaml): Renovate can't fix pub alerts,
   // and handling only GitHub Actions alerts would duplicate Dependabot's PRs.
   vulnerabilityAlerts: { enabled: false },
+  customManagers: [
+    {
+      customType: "regex",
+      description: "Pinned CLI versions (Betterleaks, OSV-Scanner) in workflow env vars.",
+      managerFilePatterns: ["/^\\.github/workflows/(secrets|native_deps)\\.yaml$/"],
+      matchStrings: [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+[A-Z_]+:\\s*\"(?<currentValue>[^\"]+)\"",
+      ],
+      extractVersionTemplate: "^v(?<version>.+)$",
+    },
+  ],
+  packageRules: [
+    {
+      description: "One PR for all GitHub Actions bumps: actions.lock narrows tags to exact versions (v7 -> v7.0.1), so each patch would otherwise get its own PR. Renovate regenerates actions.lock in the same PR.",
+      matchManagers: ["github-actions"],
+      groupName: "github actions",
+    },
+    {
+      description: "The lockfile verify action is released as verify/vX.Y.Z tags; its plain vX.Y.Z tags run the previous CLI release.",
+      matchManagers: ["github-actions"],
+      matchDepNames: ["github/gh-actions-lock"],
+      versioning: "regex:^verify/v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
+    },
+    {
+      description: "Keep the CI Betterleaks version (secrets.yaml) and the pre-commit hook rev in one PR.",
+      matchDepNames: ["betterleaks/betterleaks"],
+      groupName: "betterleaks",
+    },
+  ],
+  // The optional Betterleaks hook in .pre-commit-config.yaml; this manager is off by default.
+  "pre-commit": { enabled: true },
 }

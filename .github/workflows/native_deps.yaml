@@ -1,0 +1,107 @@
+name: native_deps
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "pubspec.lock"
+      - "android/**"
+      - "ios/**"
+      - ".github/workflows/native_deps.yaml"
+  schedule:
+    - cron: "53 2 * * 1" # weekly, so new advisories surface without a code change
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  # renovate: datasource=github-releases depName=google/osv-scanner
+  OSV_SCANNER_VERSION: "2.7.1"
+
+# Report-only scans of the native dependencies Flutter plugins pull in, which pub and Dependabot don't see.
+jobs:
+  # Submits the resolved Gradle graph, so Dependabot alerts also cover Maven dependencies.
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write # dependency submission API
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v6.3.0
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: subosito/flutter-action@v2.23.0
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - run: flutter pub get --enforce-lockfile
+
+      # Writes android/local.properties so Gradle can load the Flutter plugin; no full build needed.
+      - run: flutter build apk --config-only --flavor development -t lib/main_development.dart
+
+      - uses: gradle/actions/dependency-submission@v6.4.1
+        with:
+          build-root-directory: android
+
+  # Flutter resolves the iOS plugins through Swift Package Manager; OSV-Scanner reads Package.resolved.
+  ios:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write # upload SARIF
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: subosito/flutter-action@v2.23.0
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - run: flutter pub get --enforce-lockfile
+
+      - run: flutter build ios --config-only --no-codesign --flavor development -t lib/main_development.dart
+
+      - name: Resolve Swift packages
+        run: >-
+          xcodebuild -resolvePackageDependencies
+          -workspace ios/Runner.xcworkspace -scheme development
+          -clonedSourcePackagesDirPath build/ios/SourcePackages
+
+      - name: Install OSV-Scanner
+        run: |
+          base="https://github.com/google/osv-scanner/releases/download/v${OSV_SCANNER_VERSION}"
+          binary="osv-scanner_darwin_arm64"
+          cd "$RUNNER_TEMP"
+          curl -fsSLO "$base/$binary"
+          curl -fsSLO "$base/osv-scanner_SHA256SUMS"
+          grep " ${binary}\$" osv-scanner_SHA256SUMS | shasum -a 256 -c -
+          mv "$binary" osv-scanner && chmod +x osv-scanner
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+
+      # Exit code 1 means vulnerabilities were found: report them, don't fail the job.
+      - name: Scan Package.resolved
+        run: |
+          rc=0
+          osv-scanner scan source --format sarif --output osv.sarif \
+            --lockfile=ios/Runner.xcworkspace/xcshareddata/swiftpm/Package.resolved || rc=$?
+          [ "$rc" -le 1 ]
+
+      - uses: github/codeql-action/upload-sarif@v4.39.5
+        with:
+          sarif_file: osv.sarif
+          category: osv-scanner-ios
